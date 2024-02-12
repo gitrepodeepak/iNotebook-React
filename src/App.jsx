@@ -1,6 +1,9 @@
 import Login from "./components/login";
 import About from "./components/about"
 import Root from "./routes/root";
+import Notes from "./components/notes";
+import {Auth} from './contexts/Auth'
+
 import {
   createBrowserRouter,
   RouterProvider,
@@ -15,7 +18,12 @@ const router = createBrowserRouter([
         index: true,
         element: <Login/>
 
-      },{
+      },
+      {
+        path: "/notes",
+        element: <Notes/>
+      },
+      {
         path: "/about",
         element: <About/>
       }
@@ -26,7 +34,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-      <RouterProvider router={router} />
+      <Auth>
+        <RouterProvider router={router} />
+      </Auth>
     </>
   )
 }
