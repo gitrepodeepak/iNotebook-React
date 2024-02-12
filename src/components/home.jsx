@@ -1,0 +1,25 @@
+import { useContext } from "react";
+import { AuthContext } from "../contexts/Auth";
+
+export default function home(){
+
+    let auth = useContext(AuthContext);
+    if(auth.authenticated){
+        return(
+            <>
+                <div className="container">
+                <h1>Welcome Home, {localStorage.getItem(username)}</h1>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Porro recusandae, ut facere dolorem maxime provident eaque? Laborum earum repellat odit, est reprehenderit nesciunt modi mollitia quod perspiciatis voluptas recusandae debitis.</p>
+                </div>
+            </>
+        )
+    }else{
+        return(
+            <>
+            <div className="container">
+                <h1>You are not logged in yet!</h1>
+            </div>
+            </>
+        )
+    }
+}

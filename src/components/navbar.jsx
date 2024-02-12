@@ -1,13 +1,10 @@
-import React, {useEffect} from 'react';
-
-import { Link, redirect, useLocation} from "react-router-dom";
+import React, { useContext } from 'react';
+import { Link, useLocation} from "react-router-dom";
+import { AuthContext } from '../contexts/Auth';
 
 export default function navbar() {
   let location = useLocation();
-
-  useEffect(() => {
-    // console.log(location.pathname);
-  }, [location]);
+  let auth = useContext(AuthContext);
 
   return (
     <>
@@ -29,12 +26,20 @@ export default function navbar() {
                 <Link className={`nav-link ${location.pathname==="/about"?"active":""}`} to="/about">About</Link>
                 </li>
             </ul>
-            <div className="d-flex">
-                <button className="btn btn-outline-success">Login</button>
-                <button className="btn btn-outline-success ms-2">Signup</button>
+
+            <div>
+              {!auth.authenticated?
+                    (<div className="d-flex">
+                      <Link to="/login"><button className="btn btn-outline-success">Login</button></Link>
+                      <Link to="/signup"><button className="btn btn-outline-success ms-2">Signup</button></Link>
+                    </div>): 
+                    <div className="d-flex">
+                    <Link to="/logout"><button className="btn btn-outline-success ms-2">Logout</button></Link>
+                    </div>}
             </div>
+            
             </div>
-        </div>
+          </div>
         </nav>
     </>
   );

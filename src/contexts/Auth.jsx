@@ -3,15 +3,19 @@ import React, { createContext, useState } from "react";
 const AuthContext = createContext();
 
 const Auth = ({children}) => {
-    const [authentication, setAuthentication] = useState(false);
+    const [authenticated, setAuthentication] = useState(false);
 
     const setAuth = () =>{
-        setAuthentication(prevAuth => !prevAuth);
+        if(localStorage.getItem(username)!=null){
+            setAuthentication(true);
+        }else{
+            setAuthentication(false)
+        }
     }
 
     return(
         <>
-            <AuthContext.Provider value={{authentication, setAuth}}>
+            <AuthContext.Provider value={{authenticated, setAuth}}>
                 {children}
             </AuthContext.Provider>
         </>

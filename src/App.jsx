@@ -2,6 +2,8 @@ import Login from "./components/login";
 import About from "./components/about"
 import Root from "./routes/root";
 import Notes from "./components/notes";
+import Signup from "./components/signup";
+import Home from "./components/home";
 import {Auth} from './contexts/Auth'
 
 import {
@@ -16,8 +18,15 @@ const router = createBrowserRouter([
     children:[
       {
         index: true,
+        element: <Home/>
+      },
+      {
+        path: "/login",
         element: <Login/>
-
+      },
+      {
+        path: "/signup",
+        element: <Signup/>
       },
       {
         path: "/notes",
