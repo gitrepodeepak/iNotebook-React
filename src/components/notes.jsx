@@ -1,37 +1,44 @@
-import React, { useContext, useState , useEffect, useMemo} from "react";
-import {AuthContext} from '../contexts/Auth';
+import React, { useState } from "react";
+import { useAuth } from '../contexts/Auth';
 import axios from 'axios';
 
-export default function notes(){
-    const auth = useContext(AuthContext);
+const notes = () =>{
     const [notes, setNotes] = useState([]);
+    const { token, isAuthenticated } = useAuth();
 
     const getNotes = async() =>{
-        if(auth.authenticated){
-            const apiUrl = 'http://localhost:8080/notes';
-            const token = localStorage.token;
-            const response = await axios.get(apiUrl,{
-                headers: {
-                    Authorization: `Bearer ${token}`
+        try {
+            if(isAuthenticated()){
+                const apiUrl = 'http://localhost:8080/notes';
+                const myToken = token;
+                const response = await axios.get(apiUrl,{
+                    headers: {
+                        Authorization: `Bearer ${myToken}`
+                    }
+                })
+                if (response.data==null) {
+                    return "Not Notes Found";
+                }else{
+                    setNotes(response.data);
                 }
-            })
-            setNotes(response.data);
+                return null;
+            }
+        } catch (error) {
+            
         }
     }
 
-    useEffect(()=>{
-        getNotes();
-    },[auth.authenticated])
-
-    if (localStorage.token!=null) {
+    if (isAuthenticated()) {
         return(
             <>
                 <div className="container">
                     <h1>Notes</h1>
+                    <button onClick={getNotes}>GetNotes</button>
                     <ul>
-                        {notes.map((note, index) => (
+                        {notes}
+                        {/* {notes.map((note, index) => (
                             <li key={index}>{note}</li>
-                        ))}
+                        ))} */}
                     </ul>
                 </div>
             </>
@@ -47,3 +54,5 @@ export default function notes(){
             )
     }
 }
+
+export default notes;

@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate, useLocation} from "react-router-dom";
-import { AuthContext } from '../contexts/Auth';
+import { useAuth } from '../contexts/Auth';
 
 export default function navbar() {
   let location = useLocation();
-  let auth = useContext(AuthContext);
   let navigate = useNavigate();
+
+  const { logout,  isAuthenticated} = useAuth();
 
   return (
     <>
@@ -29,14 +30,14 @@ export default function navbar() {
             </ul>
 
             <div>
-              {!auth.authenticated?
+              {!isAuthenticated()?
                     (<div className="d-flex">
                       <Link to="/login"><button className="btn btn-outline-success">Login</button></Link>
                       <Link to="/signup"><button className="btn btn-outline-success ms-2">Signup</button></Link>
                     </div>): 
-                    <div className="d-flex">
-                    <button className="btn btn-outline-success ms-2" onClick={()=>{localStorage.clear(); navigate("/")}}>Logout</button>
-                    </div>}
+                    (<div className="d-flex">
+                    <button className="btn btn-outline-success ms-2" onClick={()=>{logout()}}>Logout</button>
+                    </div>)}
             </div>
             
             </div>

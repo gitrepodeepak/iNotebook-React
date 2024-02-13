@@ -4,7 +4,7 @@ import Root from "./routes/root";
 import Notes from "./components/notes";
 import Signup from "./components/signup";
 import Home from "./components/home";
-import {Auth} from './contexts/Auth'
+import { Auth } from './contexts/Auth'
 
 import {
   createBrowserRouter,

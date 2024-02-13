@@ -1,26 +1,59 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useMemo, useState } from "react";
 
 const AuthContext = createContext();
 
-const Auth = ({children}) => {
-    const [authenticated, setAuthentication] = useState(false);
-    const token = localStorage.token;
+export const Auth = ({ children }) => {
 
-    useEffect(()=>{
-        if(token!=null){
-            setAuthentication(true)
-        }else(
-            setAuthentication(false)
-        )
-    },[token])
+  const [token, setToken] = useState(localStorage.token);
+  const [username, setUsername] = useState(localStorage.username);
 
-    return(
-        <>
-            <AuthContext.Provider value={{authenticated}}>
-                {children}
-            </AuthContext.Provider>
-        </>
-    );
+  const login = async (myUsername, myPassword) => {
+    const url = "http://localhost:8080/auth/login";
+    try {
+      const response = await axios.post(url, {
+        username: myUsername,
+        password: myPassword,
+      });
+      const { token, username } = response;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("username", username);
+      setToken(token);
+      return null;
+
+    } catch (error) {
+        return error;
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    setToken(null);
+    setUsername(null);
+  };
+
+  const isAuthenticated = () => {
+    return token!=null;
+  };
+
+  const auth = useMemo(() => ({
+    token,
+    username,
+    login,
+    logout,
+    isAuthenticated
+  }),[token]);
+
+  return (
+    <>
+      <AuthContext.Provider value={ auth }>
+        {children}
+      </AuthContext.Provider>
+    </>
+  );
 };
 
-export {Auth, AuthContext}
+export const useAuth = () => {
+    return useContext(AuthContext);
+};
