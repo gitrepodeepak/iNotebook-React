@@ -1,10 +1,11 @@
 import Login from "./components/login";
 import About from "./components/about"
 import Root from "./routes/root";
-import Notes from "./components/notes";
+import MyNotes from "./components/noteComponent/myNotes";
 import Signup from "./components/signup";
 import Home from "./components/home";
 import { Auth } from './contexts/Auth'
+import { Notes } from "./contexts/Notes"
 
 import {
   createBrowserRouter,
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/notes",
-        element: <Notes/>
+        element: <MyNotes/>
       },
       {
         path: "/about",
@@ -44,7 +45,9 @@ function App() {
   return (
     <>
       <Auth>
-        <RouterProvider router={router} />
+        <Notes>
+          <RouterProvider router={router} />
+        </Notes>
       </Auth>
     </>
   )

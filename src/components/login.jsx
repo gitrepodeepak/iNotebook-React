@@ -8,7 +8,6 @@ export default function login() {
   const [error, setError] = useState("");
   let navigate = useNavigate();
 
-
   const { login, isAuthenticated } = useAuth();
 
   const handleLogin =  async () => {

@@ -1,13 +1,18 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useState, useMemo, createContext, useContext } from "react";
 import { useAuth } from '../contexts/Auth';
 import axios from 'axios';
 
+const NoteContext = createContext();
 
-const fetchNotes = () => {
+export const useNote = () =>{
+    return useContext(NoteContext);
+}
+
+export const Notes = ({children}) => {
     const [notes, setNotes] = useState([]);
     const { token, isAuthenticated } = useAuth();
 
-    const getNotes = async() =>{
+    const getNotes = async () =>{
         try {
             if(isAuthenticated()){
                 const apiUrl = 'http://localhost:8080/notes';
@@ -17,11 +22,10 @@ const fetchNotes = () => {
                         Authorization: `Bearer ${myToken}`
                     }
                 })
-                if (response.data==null) {
-                    return "Not Notes Found";
-                }else{
+                if (response.data!=null) {
                     setNotes(response.data);
-                    console.log(response)
+                }else{
+                    return "Not Notes Found";
                 }
                 return null;
             }
@@ -29,6 +33,17 @@ const fetchNotes = () => {
             return error
         }
     }
-}
 
-export default fetchNotes;
+    const note = useMemo(()=>({
+        notes,
+        getNotes
+    }),[notes])
+
+    return(
+        <>
+            <NoteContext.Provider value={ note }>
+                {children}
+            </NoteContext.Provider>
+        </>
+    )
+}

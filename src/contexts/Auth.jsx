@@ -3,6 +3,10 @@ import axios from "axios";
 
 const AuthContext = createContext();
 
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
+
 export const Auth = ({ children }) => {
 
   const [token, setToken] = useState(localStorage.token);
@@ -21,6 +25,7 @@ export const Auth = ({ children }) => {
       localStorage.setItem("token", token);
       localStorage.setItem("username", username);
       setToken(token);
+      setUsername(username);
 
       return null;
 
@@ -55,8 +60,4 @@ export const Auth = ({ children }) => {
       </AuthContext.Provider>
     </>
   );
-};
-
-export const useAuth = () => {
-    return useContext(AuthContext);
 };
