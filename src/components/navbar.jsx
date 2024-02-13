@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
-import { Link, useLocation} from "react-router-dom";
+import { Link, useNavigate, useLocation} from "react-router-dom";
 import { AuthContext } from '../contexts/Auth';
 
 export default function navbar() {
   let location = useLocation();
   let auth = useContext(AuthContext);
+  let navigate = useNavigate();
 
   return (
     <>
@@ -34,7 +35,7 @@ export default function navbar() {
                       <Link to="/signup"><button className="btn btn-outline-success ms-2">Signup</button></Link>
                     </div>): 
                     <div className="d-flex">
-                    <Link to="/logout"><button className="btn btn-outline-success ms-2">Logout</button></Link>
+                    <button className="btn btn-outline-success ms-2" onClick={()=>{localStorage.clear(); navigate("/")}}>Logout</button>
                     </div>}
             </div>
             

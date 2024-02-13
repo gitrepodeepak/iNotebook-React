@@ -4,35 +4,36 @@ import { AuthContext } from "../contexts/Auth";
 import axios from "axios";
 
 export default function login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [myUsername, setUsername] = useState("");
+  const [myPassword, setPassword] = useState("");
   let navigate = useNavigate();
 
   let auth = useContext(AuthContext);
 
   const handleLogin = async () => {
     console.log("Login Clicked")
-
+    
     const apiUrl = "http://localhost:8080/auth/login";
-  
+    
     try {
       const response = await axios.post(apiUrl, {
-        "username": username,
-        "password": password,
+        "username": myUsername,
+        "password": myPassword,
       });
       
-      const { receivedToken, receivedUsername } = response.data;
-  
-      localStorage.setItem("token", receivedToken);
-      localStorage.setItem("username", receivedUsername);
+      console.log(response.data)
+      const { token, username } = await response.data;
       
-      auth.setAuth();
-  
-      if (!auth.authentication) {
+      console.log(token, username)
+      localStorage.setItem("token", token);
+      localStorage.setItem("username", username);
+      
+      if (await token==null) {
         throw new Error("Invalid username or password");
       } else {
-        navigate("/notes");
+        await navigate("/notes");
       }
+
     } catch (error) {
       console.log(error);
     }
@@ -56,7 +57,7 @@ export default function login() {
               type="text"
               className="form-control"
               id="username"
-              value={username}
+              value={myUsername}
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
@@ -68,7 +69,7 @@ export default function login() {
               type="password"
               className="form-control"
               id="password"
-              value={password}
+              value={myPassword}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
