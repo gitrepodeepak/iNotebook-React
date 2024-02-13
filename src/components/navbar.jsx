@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link, useNavigate, useLocation} from "react-router-dom";
 import { useAuth } from '../contexts/Auth';
 
@@ -36,7 +36,7 @@ export default function navbar() {
                       <Link to="/signup"><button className="btn btn-outline-success ms-2">Signup</button></Link>
                     </div>): 
                     (<div className="d-flex">
-                    <button className="btn btn-outline-success ms-2" onClick={()=>{logout()}}>Logout</button>
+                    <button className="btn btn-outline-success ms-2" onClick={()=>{logout(); navigate("/");}}>Logout</button>
                     </div>)}
             </div>
             

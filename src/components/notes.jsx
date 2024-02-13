@@ -1,45 +1,38 @@
-import React, { useState } from "react";
 import { useAuth } from '../contexts/Auth';
-import axios from 'axios';
 
 const notes = () =>{
-    const [notes, setNotes] = useState([]);
-    const { token, isAuthenticated } = useAuth();
 
-    const getNotes = async() =>{
-        try {
-            if(isAuthenticated()){
-                const apiUrl = 'http://localhost:8080/notes';
-                const myToken = token;
-                const response = await axios.get(apiUrl,{
-                    headers: {
-                        Authorization: `Bearer ${myToken}`
-                    }
-                })
-                if (response.data==null) {
-                    return "Not Notes Found";
-                }else{
-                    setNotes(response.data);
-                }
-                return null;
-            }
-        } catch (error) {
-            
-        }
-    }
+    const { token, isAuthenticated } = useAuth();
 
     if (isAuthenticated()) {
         return(
             <>
                 <div className="container">
                     <h1>Notes</h1>
-                    <button onClick={getNotes}>GetNotes</button>
+                    {notes.map(function(note){({note})})}
                     <ul>
-                        {notes}
-                        {/* {notes.map((note, index) => (
-                            <li key={index}>{note}</li>
-                        ))} */}
+                        {/* {notes.map((note, index)=>{<li>
+                            <div className="modal" tabIndex="-1">
+                                <div className="modal-dialog">
+                                    <div className="modal-content">
+                                    <div className="modal-header">
+                                    <h5 className="modal-title">{index}</h5>
+                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div className="modal-body">
+                                    <p>{note}</p>
+                                    </div>
+                                    <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" className="btn btn-primary">Save changes</button>
+                                    </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </li> 
+                        })} */}
                     </ul>
+                    <button type="button" className="btn btn-primary" onClick={()=>{getNotes()}}>Get Notes</button>
                 </div>
             </>
         )

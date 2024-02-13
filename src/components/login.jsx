@@ -8,29 +8,21 @@ export default function login() {
   const [error, setError] = useState("");
   let navigate = useNavigate();
 
+
   const { login, isAuthenticated } = useAuth();
 
-  console.log(isAuthenticated())
-  
-  const handleLogin = async () => {login(username, password)}
-
-  // const result = login(username, password);
-  // console.log(result);
-
-  // const handleLogin =  login(username, password);
-  // {
-  //   try {
-  //     const result = await login(username, password);
-  //     console.log(result)
-  //     if (result === null) {
-  //       navigate("/");
-  //     } else {
-  //       setError(result);
-  //     }
-  //   } catch (error) {
-  //     setError(error.message);
-  //   }
-  // };
+  const handleLogin =  async () => {
+    try {
+      const result = await login(username, password);
+      if (result === null) {
+        navigate("/");
+      } else {
+        setError(result);
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
   if(isAuthenticated()){
     return(
@@ -42,7 +34,7 @@ export default function login() {
     return (
           <>
           <div className="container-sm d-flex align-middle justify-content-center my-4 py-4">
-            <form onSubmit={handleLogin()}>
+            <form onSubmit={(e)=>{e.preventDefault(); handleLogin()}}>
               <div className="mb-3">
                 <label htmlFor="username" className="form-label">
                   Username

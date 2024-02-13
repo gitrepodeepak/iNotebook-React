@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useMemo, useState } from "react";
+import axios from "axios";
 
 const AuthContext = createContext();
 
@@ -9,16 +10,18 @@ export const Auth = ({ children }) => {
 
   const login = async (myUsername, myPassword) => {
     const url = "http://localhost:8080/auth/login";
+
     try {
       const response = await axios.post(url, {
         username: myUsername,
         password: myPassword,
       });
-      const { token, username } = response;
+      const { token, username } = response.data;
 
       localStorage.setItem("token", token);
       localStorage.setItem("username", username);
       setToken(token);
+
       return null;
 
     } catch (error) {
@@ -47,7 +50,7 @@ export const Auth = ({ children }) => {
 
   return (
     <>
-      <AuthContext.Provider value={ auth }>
+      <AuthContext.Provider value={auth}>
         {children}
       </AuthContext.Provider>
     </>
