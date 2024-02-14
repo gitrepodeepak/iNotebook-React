@@ -2,11 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/Auth";
 
 export default function home(){
-    // const [uname, setUname] = useState("");
-
     const { username, isAuthenticated } = useAuth();
-
-    
 
     if(isAuthenticated()){
         return(

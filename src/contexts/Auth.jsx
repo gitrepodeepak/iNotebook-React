@@ -8,7 +8,6 @@ export const useAuth = () => {
 };
 
 export const Auth = ({ children }) => {
-
   const [token, setToken] = useState(localStorage.token);
   const [username, setUsername] = useState(localStorage.username);
 
