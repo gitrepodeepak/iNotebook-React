@@ -30,6 +30,7 @@ export const Auth = ({ children }) => {
       if (error.response) {
           console.log(error.response.status); // 401
           console.log(error.response.data); // 'Access Denied !! Full authentication is required to access this resource\r\n'
+          return error.response.status;
       }else if (error.request) {
           // The request was made but no response was received
           console.log(error.request);

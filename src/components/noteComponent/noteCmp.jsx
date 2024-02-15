@@ -20,12 +20,12 @@ export default function NoteCmp(props){
 
     return(
         <>
-        <table className="table table-dark table-striped-columns">
+        <table className="table table-light table-striped-columns">
         <thead>
             <tr>
             <th scope="col">#</th>
             <th scope="col">Notes</th>
-            <th scope="col">deleteNotes</th>
+            <th scope="col">Delete</th>
             </tr>
         </thead>
         {props.notes.map((notes, index)=>{
@@ -39,18 +39,12 @@ export default function NoteCmp(props){
                 }
             })}
             </table>
-            <table className="table table-dark table-striped-columns">
-                <tr>
-                    <td>
 
-                    <div className='container'>
-                    <form onSubmit={processAddNote}>
-                        <input className="form-control form-control-md" type="text" placeholder="Add Note" aria-label="default input example" ref={inputRef}/>
-                    </form>
-                    </div>
-                    </td>
-                </tr>
-            </table>
+            <div className='container'>
+                <form onSubmit={processAddNote}>
+                    <input className="form-control form-control-md" type="text" placeholder="Add Note" aria-label="default input example" ref={inputRef} />
+                </form>
+            </div>
 
 
         </>

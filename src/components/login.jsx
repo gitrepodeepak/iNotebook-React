@@ -7,7 +7,7 @@ export default function login() {
   const password = useRef();
   let navigate = useNavigate();
 
-  const {login, isAuthenticated, handleReload } = useAuth();
+  const {login, isAuthenticated, handleReload, logout } = useAuth();
 
   const handleLogin =  async (event) => {
     event.preventDefault();
@@ -15,11 +15,12 @@ export default function login() {
     const myPassword = password.current.value;
     try {
       const result = await login(myUsername, myPassword);
+      // console.log(result)
       if (result === null) {
         navigate("/");
         handleReload();
-      } else {
-        console.log(result);
+      }else {
+        console.log("Error Status: " + result);
       }
     } catch (error) {
       console.log(error.message);
