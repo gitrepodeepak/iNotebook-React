@@ -39,14 +39,18 @@ export default function NoteCmp(props){
                 }
             })}
             </table>
-                    
-            <div className='container d-flex'>
+            <table className="table table-dark table-striped-columns">
+                <tr>
+                    <td>
 
-            <form onSubmit={processAddNote}>
-                <input className="form-control form-control-md" type="text" placeholder="Add Note" aria-label="default input example" ref={inputRef}/>
-                <button type="submit" className="btn btn-success mt-4 justify-content-center">Submit</button>
-            </form>
-            </div>
+                    <div className='container'>
+                    <form onSubmit={processAddNote}>
+                        <input className="form-control form-control-md" type="text" placeholder="Add Note" aria-label="default input example" ref={inputRef}/>
+                    </form>
+                    </div>
+                    </td>
+                </tr>
+            </table>
 
 
         </>

@@ -1,11 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/Auth";
 
 export default function login() {
   const username = useRef();
   const password = useRef();
-  const [error, setError] = useState("");
   let navigate = useNavigate();
 
   const {login, isAuthenticated, handleReload } = useAuth();
@@ -20,10 +19,10 @@ export default function login() {
         navigate("/");
         handleReload();
       } else {
-        setError(result);
+        console.log(result);
       }
     } catch (error) {
-      setError(error.message);
+      console.log(error.message);
     }
   };
 
@@ -36,33 +35,17 @@ export default function login() {
   }else{
     return (
           <>
-          <div className="container-sm d-flex align-middle justify-content-center my-4 py-4">
+          <div className="container-sm mt-4 d-flex align-middle justify-content-center ">
             <form onSubmit={handleLogin}>
-              <div className="mb-3">
-                <label htmlFor="username" className="form-label">
-                  Username
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="username"
-                  ref={username}
-                  />
+              <div className="form-floating mb-3">
+                <input type="text" className="form-control" id="floatingInput" placeholder="Username" ref={username}/>
+                <label htmlFor="floatingInput">Username</label>
               </div>
-              <div className="mb-3">
-                <label htmlFor="password" className="form-label">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="password"
-                  ref={password}
-                  />
+              <div className="form-floating">
+                <input type="password" className="form-control" id="floatingPassword" placeholder="Password" ref={password}/>
+                <label htmlFor="floatingPassword">Password</label>
               </div>
-              <button type="submit" className="btn btn-primary">
-                Submit
-              </button>
+              <button type="submit" className="btn btn-primary mt-4">Submit</button>
             </form>
           </div>
         </>

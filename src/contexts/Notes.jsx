@@ -10,7 +10,7 @@ export const useNote = () =>{
 
 export const Notes = ({children}) => {
     const [notes, setNotes] = useState([]);
-    const { token, isAuthenticated, username } = useAuth();
+    const { token, isAuthenticated, username, logout } = useAuth();
 
     // const checkAuth = async () =>{
     //     const result = await isAuthenticated()
@@ -35,7 +35,18 @@ export const Notes = ({children}) => {
                 return null;
             }
         } catch (error) {
-            return error;
+            if (error.response.status==401) {
+                console.log(error.response.status); // 401
+                console.log(error.response.data); // 'Access Denied !! Full authentication is required to access this resource\r\n'
+                logout();
+            }else if (error.request) {
+                // The request was made but no response was received
+                console.log(error.request);
+            } else {
+                // Something happened in setting up the request that triggered an error
+                console.log('Error', error.message);
+                return error;
+            }
         }
     }
     
@@ -56,7 +67,18 @@ export const Notes = ({children}) => {
                 return response;
             }
         } catch (error) {
-            return error
+            if (error.response.status==401) {
+                console.log(error.response.status); // 401
+                console.log(error.response.data); // 'Access Denied !! Full authentication is required to access this resource\r\n'
+                logout();
+            }else if (error.request) {
+                // The request was made but no response was received
+                console.log(error.request);
+            } else {
+                // Something happened in setting up the request that triggered an error
+                console.log('Error', error.message);
+                return error;
+            }
         }
     }
 
@@ -76,7 +98,18 @@ export const Notes = ({children}) => {
                 return response;
             }
         } catch (error) {
-            return error
+            if (error.response.status==401) {
+                console.log(error.response.status); // 401
+                console.log(error.response.data); // 'Access Denied !! Full authentication is required to access this resource\r\n'
+                logout();
+            }else if (error.request) {
+                // The request was made but no response was received
+                console.log(error.request);
+            } else {
+                // Something happened in setting up the request that triggered an error
+                console.log('Error', error.message);
+                return error;
+            }
         }
     }
 

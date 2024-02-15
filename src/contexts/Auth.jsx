@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useContext, useMemo, useState } from "react";
 import axios from "axios";
 
 const AuthContext = createContext();
@@ -24,15 +24,46 @@ export const Auth = ({ children }) => {
       localStorage.setItem("username", username);
       setToken(token);
       setUsername(username);
-
-      // console.log("token: " + token);                           //Debugging
-      // console.log("token evaluation: " + token!=null);          //Debugging
-      // console.log("isAuthenticated: " + isAuthenticated());    //Debugging
-
       return null;
 
     } catch (error) {
-        return error;
+      if (error.response) {
+          console.log(error.response.status); // 401
+          console.log(error.response.data); // 'Access Denied !! Full authentication is required to access this resource\r\n'
+      }else if (error.request) {
+          // The request was made but no response was received
+          console.log(error.request);
+      } else {
+          // Something happened in setting up the request that triggered an error
+          console.log('Error', error.message);
+          return error;
+      }
+    }
+  };
+
+  const signup = async (myEmail, myUsername, myPassword) => {
+    const url = "http://localhost:8080/signup";
+    try {
+      const response = await axios.post(url, {
+        email: myEmail,
+        username: myUsername,
+        password: myPassword,
+      });
+      console.log(response)
+      return response;
+
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.status); // 401
+        console.log(error.response.data); // 'Access Denied !! Full authentication is required to access this resource\r\n'
+      }else if (error.request) {
+          // The request was made but no response was received
+          console.log(error.request);
+      } else {
+          // Something happened in setting up the request that triggered an error
+          console.log('Error', error.message);
+          return error;
+      }
     }
   };
 
@@ -51,38 +82,11 @@ export const Auth = ({ children }) => {
     window.location.reload();
   };
 
-  // const authorization = async () =>{
-  //   const apiUrl = 'http://localhost:8080/notes';
-  //   const myToken = token;
-  //   try{
-  //     const response = await axios.get(apiUrl,{
-  //         headers: {
-  //             Authorization: `Bearer ${myToken}`
-  //         }
-  //     })
-  //     if (response.status==200) {
-  //       return true;
-  //     }
-  //   } catch (error) {
-  //     if (error.response) {
-  //       // The request was made and the server responded with a status code
-  //       console.log(error.response.status); // 401
-  //       console.log(error.response.data); // 'Access Denied !! Full authentication is required to access this resource\r\n'
-  //       return error.response.status!=401;
-  //     } else if (error.request) {
-  //       // The request was made but no response was received
-  //       console.log(error.request);
-  //     } else {
-  //       // Something happened in setting up the request that triggered an error
-  //       console.log('Error', error.message);
-  //     }
-  //   }
-  // }
-
   const auth = useMemo(() => ({
     token,
     username,
     login,
+    signup,
     logout,
     isAuthenticated,
     handleReload
