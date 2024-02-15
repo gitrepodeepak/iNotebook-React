@@ -1,20 +1,24 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/Auth";
 
 export default function login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const username = useRef();
+  const password = useRef();
   const [error, setError] = useState("");
   let navigate = useNavigate();
 
-  const { login, isAuthenticated } = useAuth();
+  const {login, isAuthenticated, handleReload } = useAuth();
 
-  const handleLogin =  async () => {
+  const handleLogin =  async (event) => {
+    event.preventDefault();
+    const myUsername = username.current.value;
+    const myPassword = password.current.value;
     try {
-      const result = await login(username, password);
+      const result = await login(myUsername, myPassword);
       if (result === null) {
         navigate("/");
+        handleReload();
       } else {
         setError(result);
       }
@@ -33,7 +37,7 @@ export default function login() {
     return (
           <>
           <div className="container-sm d-flex align-middle justify-content-center my-4 py-4">
-            <form onSubmit={(e)=>{e.preventDefault(); handleLogin()}}>
+            <form onSubmit={handleLogin}>
               <div className="mb-3">
                 <label htmlFor="username" className="form-label">
                   Username
@@ -42,8 +46,7 @@ export default function login() {
                   type="text"
                   className="form-control"
                   id="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  ref={username}
                   />
               </div>
               <div className="mb-3">
@@ -54,8 +57,7 @@ export default function login() {
                   type="password"
                   className="form-control"
                   id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  ref={password}
                   />
               </div>
               <button type="submit" className="btn btn-primary">

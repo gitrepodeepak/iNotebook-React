@@ -1,32 +1,16 @@
-import { useMemo, useEffect } from 'react';
+import { useMemo } from 'react';
 import { useAuth } from '../../contexts/Auth';
 import { useNote } from '../../contexts/Notes';
 import NoteCmp from './noteCmp';
 
 const myNotes = () =>{
-    const { isAuthenticated, logout } = useAuth();
-    const { notes, getNotes} = useNote();
-
-    useMemo(()=>{
-        let response = null;
-        console.log("UseEffect is Run...")
-        const check = async ()=>{
-            if (isAuthenticated()) {
-                response = await getNotes();
-                console.log(response);
-                if (response==null) {
-                    getNotes();
-                }else{
-                    const result = await response;
-                    if(result.response.status==401){
-                        // console.log("logging out...")
-                        logout();
-                    }
-                }
-            }
+    const { isAuthenticated} = useAuth();
+    const { notes, getNotes} = useNote();    
+    
+    useMemo(async () => {
+        if (isAuthenticated()) {
+            await getNotes();
         }
-        check();
-        // return ()=>{response = null};
     },[isAuthenticated()])
 
     if (isAuthenticated()) {

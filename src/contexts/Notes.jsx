@@ -12,9 +12,14 @@ export const Notes = ({children}) => {
     const [notes, setNotes] = useState([]);
     const { token, isAuthenticated, username } = useAuth();
 
+    // const checkAuth = async () =>{
+    //     const result = await isAuthenticated()
+    //     return result;
+    //   }
+
     const getNotes = async () =>{
         try {
-            if (isAuthenticated()) {
+            if(isAuthenticated()){
                 const apiUrl = 'http://localhost:8080/notes';
                 const myToken = token;
                 const response = await axios.get(apiUrl,{
@@ -33,33 +38,12 @@ export const Notes = ({children}) => {
             return error;
         }
     }
-
-    const delNote = async (note) =>{
-        const apiUrl = "http://localhost:8080/delnote"
-
-        if (isAuthenticated()) {
-            try {
-                const response = await axios.post(apiUrl,{
-                    "username": username,
-                    "note": note
-                },{
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-            })
-                console.log(response)
-                return response;
-            } catch (error) {
-                return error
-            }
-        }
-    }
-
+    
     const addNote = async (note) =>{
         const apiUrl = "http://localhost:8080/addnote"
         const notes = [note]
-        if (isAuthenticated()) {
-            try {
+        try {
+            if(isAuthenticated()){
                 const response = await axios.post(apiUrl,{
                     "username": username,
                     "notes": notes
@@ -67,14 +51,35 @@ export const Notes = ({children}) => {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
-            })
+                })
                 console.log(response)
                 return response;
-            } catch (error) {
-                return error
             }
+        } catch (error) {
+            return error
         }
     }
+
+    const delNote = async (note) =>{
+        const apiUrl = "http://localhost:8080/delnote"
+        try {
+            if(isAuthenticated()){
+                const response = await axios.post(apiUrl,{
+                    "username": username,
+                    "note": note
+                },{
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                console.log(response)
+                return response;
+            }
+        } catch (error) {
+            return error
+        }
+    }
+
 
     const note = useMemo(()=>({
         notes,
