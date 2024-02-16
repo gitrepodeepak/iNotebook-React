@@ -29,7 +29,9 @@ export const Notes = ({children}) => {
                 })
                 if (response.data!=null) {
                     // console.log(response);
-                    setNotes(response.data);
+                    const responseReverse = response.data;
+                    const content = responseReverse.reverse();
+                    setNotes(content);
                 }else{
                     console.log("No notes found");
                     return "No Notes Found";

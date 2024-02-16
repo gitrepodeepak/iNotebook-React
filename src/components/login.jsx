@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/Auth";
 import Spinner from './spinner';
+import Alert from './alert';
 
 export default function login() {
   const username = useRef();
@@ -12,6 +13,20 @@ export default function login() {
 
   const [loading, setLoading] = useState(false);
 
+  const[showAlert, setShowAlert] = useState(false);
+  const[alert, setAlert] = useState({
+      type: "",
+      message: ""
+  })
+
+  const displayAlert = (type, message) =>{
+    setAlert({type: type, message: message})
+    setShowAlert(true);
+    setTimeout(() => {
+        setShowAlert(false);
+    }, 2000);
+}
+
   const handleLogin =  async (event) => {
     setLoading(true);
     event.preventDefault();
@@ -19,12 +34,13 @@ export default function login() {
     const myPassword = password.current.value;
     try {
       const result = await login(myUsername, myPassword);
-      // console.log(result)
       if (result === null) {
+        displayAlert("success", "Login Sccessful!");
         navigate("/");
         handleReload();
       }else {
-        console.log("Error Status: " + result);
+        // console.log("Error Status: " + result);
+        displayAlert("danger", result);
       }
     } catch (error) {
       console.log(error.message);
@@ -48,19 +64,24 @@ export default function login() {
         
       }else{
         return(
-          <div className="container-sm mt-4 d-flex align-middle justify-content-center ">
-            <form onSubmit={handleLogin}>
-              <div className="form-floating mb-3">
-                <input type="text" className="form-control" id="floatingInput" placeholder="Username" ref={username}/>
-                <label htmlFor="floatingInput">Username</label>
-              </div>
-              <div className="form-floating">
-                <input type="password" className="form-control" id="floatingPassword" placeholder="Password" ref={password}/>
-                <label htmlFor="floatingPassword">Password</label>
-              </div>
-              <button type="submit" className="btn btn-primary mt-4">Submit</button>
-            </form>
-          </div>
+          <>
+          { showAlert && <div className='container d-flex justify-content-center' style={{zIndex:10}}>
+                    <Alert alert={alert} />
+                    </div> }
+            <div className="container-sm mt-4 d-flex align-middle justify-content-center ">
+              <form onSubmit={handleLogin}>
+                <div className="form-floating mb-3 mt-4">
+                  <input type="text" className="form-control" id="floatingInput" placeholder="Username" ref={username}/>
+                  <label htmlFor="floatingInput">Username</label>
+                </div>
+                <div className="form-floating">
+                  <input type="password" className="form-control" id="floatingPassword" placeholder="Password" ref={password}/>
+                  <label htmlFor="floatingPassword">Password</label>
+                </div>
+                <button type="submit" className="btn btn-primary mt-4">Submit</button>
+              </form>
+            </div>
+          </>
         )
       }
     }
