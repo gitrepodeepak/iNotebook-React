@@ -28,9 +28,11 @@ export const Notes = ({children}) => {
                     }
                 })
                 if (response.data!=null) {
+                    // console.log(response);
                     setNotes(response.data);
                 }else{
-                    return "Not Notes Found";
+                    console.log("No notes found");
+                    return "No Notes Found";
                 }
                 return null;
             }

@@ -10,6 +10,7 @@ const myNotes = () =>{
     useMemo(async () => {
         if (isAuthenticated()) {
             await getNotes();
+            
         }
     },[isAuthenticated()])
 
@@ -18,6 +19,7 @@ const myNotes = () =>{
             <>
                 <div className="container">
                     <h1>Notes</h1>
+
                     <div className="flex flex-col sm:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-4 mx-4">
                         <NoteCmp notes={notes} key={notes.map((a, i)=>{return i})}/>
                     </div>
